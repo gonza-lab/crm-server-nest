@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
+import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -16,8 +17,8 @@ import { UserModule } from './user/user.module';
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || 'root',
       database: process.env.DB_DATABASE || 'test',
-      entities: [],
-      synchronize: true,
+      entities: [User],
+      synchronize: process.env.NODE_ENV !== 'production',
     }),
     AuthModule,
     OrderModule,
