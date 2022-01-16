@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Role } from 'src/role/entities/role.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -23,5 +24,7 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: string;
-  // @Column() role: number;
+
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
 }

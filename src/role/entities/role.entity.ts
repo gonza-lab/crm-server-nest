@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Role {
@@ -14,4 +15,7 @@ export class Role {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: string;
+
+  @OneToMany(() => User, (user) => user.role)
+  users: User[];
 }

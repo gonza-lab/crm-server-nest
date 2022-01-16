@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommandModule } from 'nestjs-command';
-import { Role } from 'src/role/entities/role.entity';
+import { RoleModule } from 'src/role/role.module';
 
-import { User } from 'src/user/entities/user.entity';
+import { UserModule } from 'src/user/user.module';
 
 import { UserService } from 'src/user/user.service';
 import { RoleSeed } from './role.seed';
@@ -11,7 +10,7 @@ import { RoleSeed } from './role.seed';
 import { UserSeed } from './user.seed';
 
 @Module({
-  imports: [CommandModule, TypeOrmModule.forFeature([User, Role])],
+  imports: [CommandModule, UserModule, RoleModule],
   providers: [UserSeed, UserService, RoleSeed],
   exports: [UserSeed, RoleSeed],
 })

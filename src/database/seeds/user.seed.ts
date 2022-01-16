@@ -43,7 +43,7 @@ export class UserSeed {
   @Command({ command: 'create:user', describe: 'Creates a user by seed' })
   async create() {
     await this.userRepository.clear();
-    await this.userService.create(users);
+    // await this.userService.create(users);
     console.log('Users created successfully.');
   }
 }
