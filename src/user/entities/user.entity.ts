@@ -13,5 +13,15 @@ export class User {
   @Column() locality: string;
   @Column() address: string;
   @Column() zip_code: string;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: string;
   // @Column() role: number;
 }
