@@ -20,7 +20,7 @@ const users: CreateUserDto[] = [
     role: 1,
   },
   {
-    first_name: 'Cliente',
+    first_name: 'Clientex',
     last_name: '',
     email: 'cliente@test.com',
     password: 'password',
@@ -42,8 +42,9 @@ export class UserSeed {
 
   @Command({ command: 'create:user', describe: 'Creates a user by seed' })
   async create() {
-    await this.userRepository.clear();
-    // await this.userService.create(users);
+    for (const user of users) {
+      await this.userService.create(user);
+    }
     console.log('Users created successfully.');
   }
 }

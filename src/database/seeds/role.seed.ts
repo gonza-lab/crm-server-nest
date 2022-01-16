@@ -22,7 +22,6 @@ export class RoleSeed {
 
   @Command({ command: 'create:role', describe: 'Creates a role by seed' })
   async create() {
-    await this.roleRepository.clear();
     await this.roleRepository.insert(roles);
     console.log('Roles created successfully.');
   }
