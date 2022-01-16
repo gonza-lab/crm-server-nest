@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from 'src/order/entities/order.entity';
+import { Role } from 'src/role/entities/role.entity';
 import { User } from 'src/user/entities/user.entity';
 import { SeedsModule } from './seeds/seeds.module';
 
@@ -16,7 +17,7 @@ import { SeedsModule } from './seeds/seeds.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [User, Order],
+        entities: [Role, User, Order],
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
       inject: [ConfigService],
