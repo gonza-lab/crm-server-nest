@@ -6,11 +6,13 @@ import { UserModule } from './user/user.module';
 import { OrderModule } from './order/order.module';
 import { RoleModule } from './role/role.module';
 import { DatabaseModule } from './database/database.module';
+import { CommandModule } from 'nestjs-command';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
+    CommandModule,
     AuthModule,
     OrderModule,
     UserModule,

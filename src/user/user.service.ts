@@ -10,7 +10,7 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto | CreateUserDto[]) {
     return this.userRepository.insert(createUserDto);
   }
 }
