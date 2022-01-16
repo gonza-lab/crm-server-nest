@@ -16,9 +16,17 @@ export class UserService {
     const existsRole = await this.roleService.findOne(createUserDto.role);
 
     if (!existsRole) {
-      throw new NotFoundException();
+      throw new NotFoundException('Role not found');
     }
 
     return this.userRepository.insert({ ...createUserDto, role: existsRole });
+  }
+
+  async findOne(id: number) {
+    const user = await this.userRepository.findOne(id, { relations: ['role'] });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
   }
 }
