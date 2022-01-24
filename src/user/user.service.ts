@@ -1,7 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoleService } from 'src/role/role.service';
-import { Repository } from 'typeorm';
+import { FindConditions, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
@@ -13,6 +17,13 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    const existsUser = await this.userRepository.findOne({
+      email: createUserDto.email,
+    });
+
+    if (existsUser)
+      throw new BadRequestException('There is already a user with this email');
+
     const existsRole = await this.roleService.findOne(createUserDto.role);
 
     if (!existsRole) {
@@ -22,8 +33,10 @@ export class UserService {
     return this.userRepository.insert({ ...createUserDto, role: existsRole });
   }
 
-  async findOne(id: number) {
-    const user = await this.userRepository.findOne(id, { relations: ['role'] });
+  async findOne(conditions: FindConditions<User>) {
+    const user = await this.userRepository.findOne(conditions, {
+      relations: ['role'],
+    });
 
     if (!user) throw new NotFoundException('User not found');
 
