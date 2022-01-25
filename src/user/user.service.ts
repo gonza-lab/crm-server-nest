@@ -30,7 +30,7 @@ export class UserService {
       throw new NotFoundException('Role not found');
     }
 
-    return this.userRepository.insert({ ...createUserDto, role: existsRole });
+    this.userRepository.insert({ ...createUserDto, role: existsRole });
   }
 
   async findOne(conditions: FindConditions<User>) {

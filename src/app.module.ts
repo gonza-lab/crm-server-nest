@@ -8,7 +8,7 @@ import { RoleModule } from './role/role.module';
 import { DatabaseModule } from './database/database.module';
 import { CommandModule } from 'nestjs-command';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
