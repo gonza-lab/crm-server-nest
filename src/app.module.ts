@@ -7,6 +7,8 @@ import { OrderModule } from './order/order.module';
 import { RoleModule } from './role/role.module';
 import { DatabaseModule } from './database/database.module';
 import { CommandModule } from 'nestjs-command';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -17,6 +19,12 @@ import { CommandModule } from 'nestjs-command';
     OrderModule,
     UserModule,
     RoleModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}
