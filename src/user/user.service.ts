@@ -34,10 +34,26 @@ export class UserService {
     this.userRepository.insert({ ...createUserDto, role: existsRole });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    const { role, ...newUser } = updateUserDto;
+  async update(id: number, { role: roleId, ...updateUserDto }: UpdateUserDto) {
+    const user = await this.userRepository.findOne({
+      id,
+    });
 
-    this.userRepository.update({ id }, newUser);
+    if (!user) throw new NotFoundException('User not found');
+
+    Object.assign(user, updateUserDto);
+
+    if (roleId) {
+      const role = await this.roleService.findOne(roleId);
+
+      if (!role) {
+        throw new NotFoundException('Role not found');
+      }
+
+      user.role = role;
+    }
+
+    await this.userRepository.save(user);
   }
 
   async findOne(conditions: FindConditions<User>) {
