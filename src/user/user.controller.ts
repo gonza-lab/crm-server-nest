@@ -4,9 +4,9 @@ import {
   Body,
   Get,
   Param,
-  Put,
   ParseIntPipe,
   Req,
+  Patch,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -30,7 +30,7 @@ export class UserController {
   }
 
   @Roles(Role.admin)
-  @Put(':id')
+  @Patch(':id')
   updateById(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -38,7 +38,7 @@ export class UserController {
     return this.userService.update(id, updateUserDto);
   }
 
-  @Put()
+  @Patch()
   update(@Body() updateUserDto: UpdateUserDto, @Req() req) {
     return this.userService.update(req.user.id, updateUserDto);
   }
