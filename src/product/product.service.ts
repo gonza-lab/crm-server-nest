@@ -11,20 +11,20 @@ export class ProductService {
     @InjectRepository(Product) private productRepository: Repository<Product>,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  create(createProductDto: CreateProductDto) {
     return this.productRepository.save(createProductDto);
   }
 
   findAll() {
-    return `This action returns all product`;
+    return this.productRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} product`;
+    return this.productRepository.findOne({ id });
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+    return this.productRepository.save({ id, ...updateProductDto });
   }
 
   remove(id: number) {
