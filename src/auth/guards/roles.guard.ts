@@ -27,6 +27,6 @@ export class RolesGuard implements CanActivate {
 
     if (access) return true;
 
-    throw new ForbiddenException('No tienes rol');
+    throw new ForbiddenException('Insufficient permissions');
   }
 }

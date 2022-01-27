@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   ParseIntPipe,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -28,11 +29,17 @@ export class UserController {
     return this.userService.findOne({ email });
   }
 
+  @Roles(Role.admin)
   @Put(':id')
-  update(
+  updateById(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.update(id, updateUserDto);
+  }
+
+  @Put()
+  update(@Body() updateUserDto: UpdateUserDto, @Req() req) {
+    return this.userService.update(req.user.id, updateUserDto);
   }
 }
