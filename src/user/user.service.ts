@@ -62,6 +62,7 @@ export class UserService {
 
   async findOne(conditions: FindConditions<User>) {
     const user = await this.userRepository.findOne(conditions, {
+      select: ['id', 'password'],
       relations: ['role'],
     });
 

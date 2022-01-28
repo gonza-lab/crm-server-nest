@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from 'src/auth/enums/role.enum';
+import { Payload } from 'src/auth/interfaces/payload.interface';
 import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './entities/order.entity';
@@ -18,16 +20,23 @@ export class OrderService {
   async create(userId: number, { products: productsId }: CreateOrderDto) {
     const products = await this.productRepository.findByIds(productsId);
     const user = await this.userRepository.findOne({ id: userId });
+    if (!user) throw new NotFoundException('User not found');
 
     const order = await this.orderRepository.save({ products, user });
-
-    delete order.user.password;
 
     return order;
   }
 
-  findAll() {
-    return `This action returns all order`;
+  findAll(user: Payload) {
+    const options: FindManyOptions<Order> = {
+      relations: ['user'],
+    };
+
+    if (user.role.name !== Role.admin) {
+      options.where = { user: { id: user.id } };
+    }
+
+    return this.orderRepository.find(options);
   }
 
   findOne(id: number) {

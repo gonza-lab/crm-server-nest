@@ -17,7 +17,7 @@ export class User {
   @Column() first_name: string;
   @Column() last_name: string;
   @Column() email: string;
-  @Column() password: string;
+  @Column({ select: false }) password: string;
   @Column() country: string;
   @Column() city: string;
   @Column() locality: string;
