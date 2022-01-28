@@ -13,7 +13,7 @@
 		"start:dev": "nest start --watch",
 		"start:debug": "nest start --debug --watch",
 		"start:prod": "node dist/main",
-		"seed": "npx nestjs-command create:role && npx nestjs-command create:user && npx nestjs-command create:user",
+		"seed": "npx nestjs-command create:role && npx nestjs-command create:user && npx nestjs-command create:product && npx nestjs-command create:order",
 		"seed:undo": "npx nestjs-command delete:user && npx nestjs-command delete:role",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
 		"test": "jest",
