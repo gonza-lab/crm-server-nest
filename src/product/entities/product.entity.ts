@@ -22,6 +22,6 @@ export class Product {
   updated_at: Date;
 
   @ManyToMany(() => Order)
-  @JoinTable()
+  @JoinTable({ name: 'product_order' })
   orders: Order[];
 }

@@ -1,9 +1,11 @@
+import { Order } from 'src/order/entities/order.entity';
 import { Role } from 'src/role/entities/role.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,12 +24,14 @@ export class User {
   @Column() address: string;
   @Column() zip_code: string;
 
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
+
+  @OneToMany(() => Order, (order) => order.user) orders: Order[];
+
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
-
-  @ManyToOne(() => Role, (role) => role.users)
-  role: Role;
 }
