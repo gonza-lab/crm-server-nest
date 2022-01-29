@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoleService } from 'src/role/role.service';
-import { FindConditions, Repository } from 'typeorm';
+import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -60,11 +60,14 @@ export class UserService {
     await this.userRepository.save(user);
   }
 
-  async findOne(conditions: FindConditions<User>) {
-    const user = await this.userRepository.findOne(conditions, {
-      select: ['id', 'password'],
+  async findOne(conditions: FindConditions<User>, withPassword?: boolean) {
+    const options: FindOneOptions<User> = {
       relations: ['role'],
-    });
+    };
+
+    if (withPassword) options.select = ['id', 'password'];
+
+    const user = await this.userRepository.findOne(conditions, options);
 
     if (!user) throw new NotFoundException('User not found');
 
