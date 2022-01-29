@@ -4,7 +4,12 @@ import { Role } from 'src/auth/enums/role.enum';
 import { Payload } from 'src/auth/interfaces/payload.interface';
 import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
-import { FindManyOptions, Repository } from 'typeorm';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './entities/order.entity';
@@ -29,7 +34,7 @@ export class OrderService {
 
   findAll(user: Payload) {
     const options: FindManyOptions<Order> = {
-      relations: ['user'],
+      relations: ['user', 'products'],
     };
 
     if (user.role.name !== Role.admin) {
@@ -39,15 +44,33 @@ export class OrderService {
     return this.orderRepository.find(options);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  findOne(id: number, user: Payload) {
+    let conditions: FindConditions<Order> = {
+      id,
+    };
+
+    const options: FindOneOptions<Order> = {
+      relations: ['user', 'products'],
+    };
+
+    if (user.role.name === Role.customer)
+      conditions = { ...conditions, user: { id: user.id } };
+
+    return this.orderRepository.findOne(conditions, options);
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {
     return `This action updates a #${id} order`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async remove(id: number, user: Payload) {
+    let conditions: FindConditions<Order> = {
+      id,
+    };
+
+    if (user.role.name === Role.customer)
+      conditions = { ...conditions, user: { id: user.id } };
+
+    await this.orderRepository.delete(conditions);
   }
 }
