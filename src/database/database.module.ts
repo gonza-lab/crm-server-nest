@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { OrderStatus } from 'src/order-status/entities/OrderStatus';
 import { Order } from 'src/order/entities/order.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { Role } from 'src/role/entities/role.entity';
@@ -18,7 +19,7 @@ import { SeedsModule } from './seeds/seeds.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [Role, User, Order, Product],
+        entities: [Role, User, Order, Product, OrderStatus],
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
       inject: [ConfigService],
