@@ -1,3 +1,4 @@
+import { OrderStatus } from 'src/order-status/entities/OrderStatus';
 import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -19,6 +20,9 @@ export class Order {
   @ManyToMany(() => Product)
   @JoinTable({ name: 'product_order' })
   products: Product[];
+
+  @ManyToOne(() => OrderStatus, (orderStatus) => orderStatus.orders)
+  status: OrderStatus;
 
   @CreateDateColumn()
   created_at: Date;
