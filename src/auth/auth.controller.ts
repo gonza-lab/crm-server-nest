@@ -16,6 +16,6 @@ export class AuthController {
 
   @Get('renew')
   renew(@Req() req) {
-    return { acces_token: this.authService.getJwt(req.user) };
+    return this.authService.login(req.user);
   }
 }
