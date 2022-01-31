@@ -50,7 +50,7 @@ export class OrderService {
 
   findAll(user: Payload) {
     const options: FindManyOptions<Order> = {
-      relations: ['user', 'products'],
+      relations: ['user', 'products', 'status'],
     };
 
     if (user.role.name !== Role.admin) {
@@ -66,7 +66,7 @@ export class OrderService {
     };
 
     const options: FindOneOptions<Order> = {
-      relations: ['user', 'products'],
+      relations: ['user', 'products', 'status'],
     };
 
     if (user.role.name === Role.customer)
