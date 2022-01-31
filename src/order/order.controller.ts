@@ -12,6 +12,8 @@ import {
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/auth/enums/role.enum';
 
 @Controller('order')
 export class OrderController {
@@ -32,9 +34,13 @@ export class OrderController {
     return this.orderService.findOne(id, req.user);
   }
 
+  @Roles(Role.admin)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    return this.orderService.update(id, updateOrderDto);
   }
 
   @Delete(':id')

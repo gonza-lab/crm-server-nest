@@ -75,8 +75,22 @@ export class OrderService {
     return this.orderRepository.findOne(conditions, options);
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  async update(id: number, { status }: UpdateOrderDto) {
+    const order = await this.orderRepository.findOne({ id });
+
+    if (!order) throw new NotFoundException('Order not found');
+
+    if (status) {
+      const orderStatus = await this.orderStatusRepository.findOne({
+        id: status,
+      });
+
+      if (!orderStatus) throw new NotFoundException('OrderStatus not found');
+
+      order.status = orderStatus;
+    }
+
+    return this.orderRepository.save(order);
   }
 
   async remove(id: number, user: Payload) {
