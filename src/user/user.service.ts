@@ -35,7 +35,7 @@ export class UserService {
     const salt = await bcrypt.genSalt();
     createUserDto.password = await bcrypt.hash(createUserDto.password, salt);
 
-    this.userRepository.insert({ ...createUserDto, role: existsRole });
+    return this.userRepository.insert({ ...createUserDto, role: existsRole });
   }
 
   async update(id: number, { role: roleId, ...updateUserDto }: UpdateUserDto) {

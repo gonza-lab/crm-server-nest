@@ -1,4 +1,4 @@
-import { OrderStatus } from 'src/order-status/entities/OrderStatus';
+import { OrderStatus } from 'src/order-status/entities/order-status.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
 import {

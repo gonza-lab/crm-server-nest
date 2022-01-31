@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Command } from 'nestjs-command';
 import { CreateOrderStatusDto } from 'src/order-status/dto/create-order-status.dto';
-import { OrderStatus } from 'src/order-status/entities/OrderStatus';
+import { OrderStatus } from 'src/order-status/entities/order-status.entity';
 import { Repository } from 'typeorm';
 
 const orderStatuses: CreateOrderStatusDto[] = [

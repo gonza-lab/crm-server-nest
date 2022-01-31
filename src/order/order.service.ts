@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/auth/enums/role.enum';
 import { Payload } from 'src/auth/interfaces/payload.interface';
+import { OrderStatus } from 'src/order-status/entities/order-status.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -20,14 +21,29 @@ export class OrderService {
     @InjectRepository(Order) private orderRepository: Repository<Order>,
     @InjectRepository(Product) private productRepository: Repository<Product>,
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(OrderStatus)
+    private orderStatusRepository: Repository<OrderStatus>,
   ) {}
 
-  async create(userId: number, { products: productsId }: CreateOrderDto) {
+  async create(
+    userId: number,
+    { products: productsId, status }: CreateOrderDto,
+  ) {
     const products = await this.productRepository.findByIds(productsId);
+
     const user = await this.userRepository.findOne({ id: userId });
     if (!user) throw new NotFoundException('User not found');
 
-    const order = await this.orderRepository.save({ products, user });
+    const orderStatus = await this.orderStatusRepository.findOne({
+      id: status,
+    });
+    if (!orderStatus) throw new NotFoundException('OrderStatus not found');
+
+    const order = await this.orderRepository.save({
+      products,
+      user,
+      status: orderStatus,
+    });
 
     return order;
   }
