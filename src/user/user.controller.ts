@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Req,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -41,5 +42,11 @@ export class UserController {
   @Patch()
   update(@Body() updateUserDto: UpdateUserDto, @Req() req) {
     return this.userService.update(req.user.id, updateUserDto);
+  }
+
+  @Roles(Role.admin)
+  @Get()
+  query(@Query('q') q) {
+    return this.userService.query(q);
   }
 }
