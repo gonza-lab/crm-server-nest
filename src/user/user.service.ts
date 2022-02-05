@@ -5,13 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoleService } from 'src/role/role.service';
-import {
-  FindConditions,
-  FindOneOptions,
-  ILike,
-  Like,
-  Repository,
-} from 'typeorm';
+import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -83,6 +77,7 @@ export class UserService {
   query(fullName: string) {
     return this.userRepository
       .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
       .where("CONCAT(user.first_name, ' ', user.last_name) LIKE :fullName", {
         fullName: `%${fullName}%`,
       })
