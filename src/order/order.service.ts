@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/auth/enums/role.enum';
 import { Payload } from 'src/auth/interfaces/payload.interface';
 import { OrderStatus } from 'src/order-status/entities/order-status.entity';
+import { ProductOrder } from 'src/product/entities/product-order.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -23,14 +24,14 @@ export class OrderService {
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(OrderStatus)
     private orderStatusRepository: Repository<OrderStatus>,
+    @InjectRepository(ProductOrder)
+    private productOrderRepository: Repository<ProductOrder>,
   ) {}
 
   async create(
     userId: number,
     { products: productsId, status }: CreateOrderDto,
   ) {
-    const products = await this.productRepository.findByIds(productsId);
-
     const user = await this.userRepository.findOne({ id: userId });
     if (!user) throw new NotFoundException('User not found');
 
@@ -40,17 +41,26 @@ export class OrderService {
     if (!orderStatus) throw new NotFoundException('OrderStatus not found');
 
     const order = await this.orderRepository.save({
-      products,
       user,
       status: orderStatus,
     });
+
+    const products = await this.productRepository.findByIds(productsId);
+
+    for (const product of products) {
+      await this.productOrderRepository.save({
+        productId: product.id,
+        orderId: order.id,
+        quantity: 1,
+      });
+    }
 
     return order;
   }
 
   findAll(user: Payload) {
     const options: FindManyOptions<Order> = {
-      relations: ['user', 'products', 'status'],
+      relations: ['user', 'products', 'products.product', 'status'],
     };
 
     if (user.role.name !== Role.admin) {

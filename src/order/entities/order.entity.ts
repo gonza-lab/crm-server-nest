@@ -1,25 +1,23 @@
 import { OrderStatus } from 'src/order-status/entities/order-status.entity';
-import { Product } from 'src/product/entities/product.entity';
+import { ProductOrder } from 'src/product/entities/product-order.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
 export class Order {
-  @PrimaryGeneratedColumn({}) id: number;
+  @PrimaryGeneratedColumn() id: number;
 
   @ManyToOne(() => User, (user) => user.orders) user: User;
 
-  @ManyToMany(() => Product)
-  @JoinTable({ name: 'product_order' })
-  products: Product[];
+  @OneToMany(() => ProductOrder, (productOrder) => productOrder.order)
+  products!: ProductOrder[];
 
   @ManyToOne(() => OrderStatus, (orderStatus) => orderStatus.orders)
   status: OrderStatus;

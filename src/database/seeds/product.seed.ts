@@ -7,10 +7,12 @@ const products: CreateProductDto[] = [
   {
     name: 'Alimento balanceado para gatos 1KG',
     price: 8000,
+    stock: 100,
   },
   {
     name: 'Alimento balanceado para perros 1KG',
     price: 5000,
+    stock: 100,
   },
 ];
 
