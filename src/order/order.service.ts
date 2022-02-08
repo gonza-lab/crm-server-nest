@@ -45,12 +45,20 @@ export class OrderService {
     const productsDB = await this.productRepository.findByIds(products);
 
     for (const productDB of productsDB) {
-      await this.productOrderRepository.save({
-        productId: productDB.id,
-        orderId: order.id,
-        quantity: products.find((product) => product.id === productDB.id)
-          .quantity,
-      });
+      const product = products.find((product) => product.id === productDB.id);
+
+      if (product.quantity <= productDB.stock) {
+        await this.productRepository.save({
+          ...productDB,
+          stock: productDB.stock - product.quantity,
+        });
+
+        await this.productOrderRepository.save({
+          productId: productDB.id,
+          orderId: order.id,
+          quantity: product.quantity,
+        });
+      }
     }
 
     return order;
