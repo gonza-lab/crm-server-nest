@@ -8,9 +8,9 @@ import { UserService } from '../../user/user.service';
 
 const users: CreateUserDto[] = [
   {
-    first_name: 'Administrador',
-    last_name: '',
-    email: 'administrador@test.com',
+    first_name: 'Gonzalo',
+    last_name: 'Flores',
+    email: 'gonzaflores358@gmail.com',
     password: 'password',
     country: 'Argentina',
     city: 'Buenos Aires',
@@ -20,9 +20,21 @@ const users: CreateUserDto[] = [
     role: 1,
   },
   {
-    first_name: 'Clientex',
-    last_name: '',
-    email: 'cliente@test.com',
+    first_name: 'Agustina',
+    last_name: 'Arias',
+    email: 'agusarias@gmail.com',
+    password: 'password',
+    country: 'Argentina',
+    city: 'Buenos Aires',
+    locality: 'Laferrere',
+    address: 'Ipela 4878',
+    zip_code: '1757',
+    role: 2,
+  },
+  {
+    first_name: 'Facundo',
+    last_name: 'Venialgo',
+    email: 'facuvenialgo@gmail.com',
     password: 'password',
     country: 'Argentina',
     city: 'Buenos Aires',
