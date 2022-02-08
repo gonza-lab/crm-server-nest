@@ -28,10 +28,7 @@ export class OrderService {
     private productOrderRepository: Repository<ProductOrder>,
   ) {}
 
-  async create(
-    userId: number,
-    { products: productsId, status }: CreateOrderDto,
-  ) {
+  async create(userId: number, { products, status }: CreateOrderDto) {
     const user = await this.userRepository.findOne({ id: userId });
     if (!user) throw new NotFoundException('User not found');
 
@@ -45,13 +42,14 @@ export class OrderService {
       status: orderStatus,
     });
 
-    const products = await this.productRepository.findByIds(productsId);
+    const productsDB = await this.productRepository.findByIds(products);
 
-    for (const product of products) {
+    for (const productDB of productsDB) {
       await this.productOrderRepository.save({
-        productId: product.id,
+        productId: productDB.id,
         orderId: order.id,
-        quantity: 1,
+        quantity: products.find((product) => product.id === productDB.id)
+          .quantity,
       });
     }
 
@@ -76,7 +74,7 @@ export class OrderService {
     };
 
     const options: FindOneOptions<Order> = {
-      relations: ['user', 'products', 'status'],
+      relations: ['user', 'products', 'products.product', 'status'],
     };
 
     if (user.role.name === Role.customer)

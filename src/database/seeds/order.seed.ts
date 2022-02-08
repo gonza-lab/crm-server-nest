@@ -5,11 +5,18 @@ import { OrderService } from 'src/order/order.service';
 
 const orders: CreateOrderDto[] = [
   {
-    products: [1, 2],
+    products: [
+      { id: 1, quantity: 1 },
+      { id: 2, quantity: 1 },
+    ],
     status: 1,
   },
   {
-    products: [3, 4, 5],
+    products: [
+      { id: 3, quantity: 1 },
+      { id: 4, quantity: 1 },
+      { id: 5, quantity: 1 },
+    ],
     status: 1,
   },
 ];
