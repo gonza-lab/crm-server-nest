@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, ILike, Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
@@ -15,8 +15,15 @@ export class ProductService {
     return this.productRepository.save(createProductDto);
   }
 
-  findAll() {
-    return this.productRepository.find();
+  findAll(name?: string, options?: FindManyOptions<Product>) {
+    if (name) {
+      options = {
+        ...options,
+        where: { name: ILike(`%${name}%`) },
+      };
+    }
+
+    return this.productRepository.find(options);
   }
 
   findOne(id: number) {
