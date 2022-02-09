@@ -36,13 +36,13 @@ export class ProductController {
   async findByQuery(
     @Query() query: ReadProductDto,
   ): Promise<PaginatedHandlerResponse<Product[]>> {
-    const data = await this.productService.findAll(query.q, {
+    const [data, total_count] = await this.productService.findAll(query.q, {
       where: {},
       skip: query.offset,
       take: query.limit,
     });
 
-    return { data, total_count: 5, count: data.length };
+    return { data, total_count, count: data.length };
   }
 
   @Get(':id')

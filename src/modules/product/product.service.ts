@@ -23,7 +23,7 @@ export class ProductService {
       };
     }
 
-    return this.productRepository.find(options);
+    return this.productRepository.findAndCount(options);
   }
 
   findOne(id: number) {
