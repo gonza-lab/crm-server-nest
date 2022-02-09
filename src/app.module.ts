@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { OrderModule } from './order/order.module';
-import { RoleModule } from './role/role.module';
-import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
+import { OrderModule } from './modules/order/order.module';
+import { RoleModule } from './modules/role/role.module';
+import { DatabaseModule } from './modules/database/database.module';
 import { CommandModule } from 'nestjs-command';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { RolesGuard } from './auth/guards/roles.guard';
-import { ProductModule } from './product/product.module';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
+import { RolesGuard } from './modules/auth/guards/roles.guard';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
