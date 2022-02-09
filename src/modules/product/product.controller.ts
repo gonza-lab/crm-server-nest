@@ -9,13 +9,17 @@ import {
   ParseIntPipe,
   Query,
 } from '@nestjs/common';
+
 import { ProductService } from './product.service';
+
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Paginated } from 'src/decorators/paginated.decorator';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { Role } from '../auth/enums/role.enum';
 import { ReadProductDto } from './dto/read-product.dto';
-import { ReadProductResponse } from './interfaces/read-product-response.interface';
+import { Role } from '../auth/enums/role.enum';
+import { PaginatedHandlerResponse } from '../../interfaces/paginated-handler-response.interface';
+import { Product } from './entities/product.entity';
 
 @Controller('product')
 export class ProductController {
@@ -28,23 +32,17 @@ export class ProductController {
   }
 
   @Get()
+  @Paginated()
   async findByQuery(
     @Query() query: ReadProductDto,
-  ): Promise<ReadProductResponse> {
+  ): Promise<PaginatedHandlerResponse<Product[]>> {
     const data = await this.productService.findAll(query.q, {
       where: {},
       skip: query.offset,
       take: query.limit,
     });
 
-    return {
-      data,
-      pagination: {
-        offset: query.offset,
-        total_count: 1,
-        count: 1,
-      },
-    };
+    return { data, total_count: 5, count: data.length };
   }
 
   @Get(':id')

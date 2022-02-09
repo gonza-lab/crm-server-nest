@@ -4,6 +4,7 @@ interface Pagination {
   count: number;
 }
 
-export interface PaginatedResponse {
+export interface PaginatedResponse<T> {
   pagination: Pagination;
+  data: T;
 }

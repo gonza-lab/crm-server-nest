@@ -1,11 +1,13 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { PaginatedInterceptor } from './interceptors/paginated.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
+  app.useGlobalInterceptors(new PaginatedInterceptor(new Reflector()));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
