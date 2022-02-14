@@ -61,7 +61,7 @@ export class OrderService {
       }
     }
 
-    return { ...order, products: productsDB };
+    return order;
   }
 
   findAll(user: Payload) {
