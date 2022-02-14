@@ -10,6 +10,7 @@ const orders: CreateOrderDto[] = [
       { id: 2, quantity: 1 },
     ],
     status: 1,
+    userId: 1,
   },
   {
     products: [
@@ -18,6 +19,7 @@ const orders: CreateOrderDto[] = [
       { id: 5, quantity: 1 },
     ],
     status: 1,
+    userId: 2,
   },
 ];
 
@@ -27,10 +29,8 @@ export class OrderSeed {
 
   @Command({ command: 'create:order', describe: 'Creates orders by seed' })
   async create() {
-    let userId = 1;
     for (const order of orders) {
-      await this.orderService.create(userId, order);
-      userId++;
+      await this.orderService.create(order);
     }
 
     console.log('Orders created successfully.');

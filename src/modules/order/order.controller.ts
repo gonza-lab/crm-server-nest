@@ -19,9 +19,10 @@ import { Role } from '../auth/enums/role.enum';
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @Roles(Role.admin)
   @Post()
-  create(@Req() req, @Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(req.user.id, createOrderDto);
+  create(@Body() createOrderDto: CreateOrderDto) {
+    return this.orderService.create(createOrderDto);
   }
 
   @Get()

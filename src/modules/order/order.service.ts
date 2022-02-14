@@ -28,7 +28,7 @@ export class OrderService {
     private productOrderRepository: Repository<ProductOrder>,
   ) {}
 
-  async create(userId: number, { products, status }: CreateOrderDto) {
+  async create({ products, status, userId }: CreateOrderDto) {
     const user = await this.userRepository.findOne({ id: userId });
     if (!user) throw new NotFoundException('User not found');
 
@@ -61,7 +61,7 @@ export class OrderService {
       }
     }
 
-    return order;
+    return { ...order, products: productsDB };
   }
 
   findAll(user: Payload) {

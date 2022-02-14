@@ -7,5 +7,6 @@ class Product {
 }
 export class CreateOrderDto {
   @IsInt() status: number;
+  @IsInt() userId: number;
   @ValidateNested({ each: true }) @Type(() => Product) products: Product[];
 }
