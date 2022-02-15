@@ -16,10 +16,10 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { Paginated } from 'src/decorators/paginated.decorator';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ReadProductDto } from './dto/read-product.dto';
 import { Role } from '../auth/enums/role.enum';
 import { PaginatedHandlerResponse } from '../../interfaces/paginated-handler-response.interface';
 import { Product } from './entities/product.entity';
+import { ReadProductDto } from './dto/read-product.dto';
 
 @Controller('product')
 export class ProductController {

@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { IsInt, IsOptional } from 'class-validator';
 
-export class PaginatedDto {
+export class ReadProductPaginatedDto {
   @IsOptional()
   @IsInt()
   @Type(() => Number)
@@ -11,8 +11,4 @@ export class PaginatedDto {
   @IsInt()
   @Type(() => Number)
   limit = 999;
-
-  @IsOptional()
-  @IsString()
-  q: string;
 }

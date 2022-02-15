@@ -1,18 +1,13 @@
-import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { IntersectionType } from '@nestjs/mapped-types';
+import { IsOptional, IsString } from 'class-validator';
+import { ReadProductPaginatedDto } from 'src/dto/read-product-paginated.dto';
 
-export class ReadProductDto {
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  offset: number;
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  limit = 999;
-
+class ReadProductQueryDto {
   @IsOptional()
   @IsString()
   q: string;
 }
+export class ReadProductDto extends IntersectionType(
+  ReadProductQueryDto,
+  ReadProductPaginatedDto,
+) {}

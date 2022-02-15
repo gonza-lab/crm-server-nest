@@ -64,19 +64,20 @@ export class OrderService {
     return order;
   }
 
-  findAll(user: Payload) {
-    const options: FindManyOptions<Order> = {
+  async findAll(options?: FindManyOptions<Order>) {
+    options = {
+      ...options,
       relations: ['user', 'products', 'products.product', 'status'],
       order: {
         updated_at: 'DESC',
       },
     };
 
-    if (user.role.name !== Role.admin) {
-      options.where = { user: { id: user.id } };
-    }
+    const [data, total_count] = await this.orderRepository.findAndCount(
+      options,
+    );
 
-    return this.orderRepository.find(options);
+    return { data, total_count, count: data.length };
   }
 
   findOne(id: number, user: Payload) {

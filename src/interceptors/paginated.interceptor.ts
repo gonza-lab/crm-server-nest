@@ -2,7 +2,7 @@ import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { map, Observable } from 'rxjs';
 import { IS_PAGINATED_KEY } from 'src/decorators/paginated.decorator';
-import { PaginatedDto } from 'src/dto/paginated.dto';
+import { ReadProductPaginatedDto } from 'src/dto/read-product-paginated.dto';
 import { PaginatedHandlerResponse } from 'src/interfaces/paginated-handler-response.interface';
 import { PaginatedResponse } from 'src/interfaces/paginated-response.interface';
 
@@ -15,7 +15,7 @@ export class PaginatedInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     const { offset } = context
       .switchToHttp()
-      .getRequest<{ query: PaginatedDto }>().query;
+      .getRequest<{ query: ReadProductPaginatedDto }>().query;
 
     const isPaginated = this.reflector.getAllAndOverride<boolean>(
       IS_PAGINATED_KEY,
