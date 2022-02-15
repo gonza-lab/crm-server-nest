@@ -67,6 +67,9 @@ export class OrderService {
   findAll(user: Payload) {
     const options: FindManyOptions<Order> = {
       relations: ['user', 'products', 'products.product', 'status'],
+      order: {
+        updated_at: 'DESC',
+      },
     };
 
     if (user.role.name !== Role.admin) {
