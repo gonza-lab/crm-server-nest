@@ -16,6 +16,7 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '../auth/enums/role.enum';
 import { ReadProductPaginatedDto } from 'src/dto/read-product-paginated.dto';
+import { Paginated } from 'src/decorators/paginated.decorator';
 
 @Controller('order')
 export class OrderController {
@@ -28,6 +29,7 @@ export class OrderController {
   }
 
   @Get()
+  @Paginated()
   findAll(@Query() query: ReadProductPaginatedDto) {
     return this.orderService.findAll({
       where: {},
