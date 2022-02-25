@@ -6,7 +6,8 @@
   "password": "your-mysql-password",
   "database": "nestjsrealworld",
 	"entities": [
-		"dist/**/*.entity{.ts,.js}"
+		"dist/**/*.entity{.ts,.js}",
+		"src/modules/**/*.entity{.ts,.js}"
 	],
   "synchronize": true
 }
