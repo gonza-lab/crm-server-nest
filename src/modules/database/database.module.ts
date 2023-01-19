@@ -13,8 +13,8 @@ import { SeedsModule } from './seeds/seeds.module';
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
+      useFactory: (configService: any) => ({
+        type: configService.get('DB_TYPE') || 'mysql',
         host: configService.get('DB_HOST'),
         port: +configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),
