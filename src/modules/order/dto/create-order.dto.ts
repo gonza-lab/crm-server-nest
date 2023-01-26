@@ -1,12 +1,23 @@
 import { Type } from 'class-transformer';
-import { IsInt, Min, ValidateNested } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsInt,
+  Min,
+  ValidateNested,
+} from 'class-validator';
 
-class Product {
+export class Product {
   @IsInt() @Min(1) id: number;
   @IsInt() @Min(1) quantity: number;
 }
 export class CreateOrderDto {
   @IsInt() status: number;
   @IsInt() userId: number;
-  @ValidateNested({ each: true }) @Type(() => Product) products: Product[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @ArrayMinSize(1)
+  @Type(() => Product)
+  products: Product[];
 }

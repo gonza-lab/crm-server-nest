@@ -95,7 +95,7 @@ export class OrderService {
     return this.orderRepository.findOne(conditions, options);
   }
 
-  async update(id: number, { status }: UpdateOrderDto) {
+  async update(id: number, { status, products }: UpdateOrderDto) {
     const order = await this.orderRepository.findOne({ id });
 
     if (!order) throw new NotFoundException('Order not found');
@@ -108,6 +108,78 @@ export class OrderService {
       if (!orderStatus) throw new NotFoundException('OrderStatus not found');
 
       order.status = orderStatus;
+    }
+
+    if (products) {
+      const productOrders = await this.productOrderRepository.find({
+        where: {
+          orderId: order.id,
+        },
+        relations: ['product'],
+      });
+
+      const productsOrdersToRemove: ProductOrder[] = [];
+      const productsOrdersToSave: ProductOrder[] = [];
+      const productsToSave: Product[] = [];
+
+      productOrders.forEach((productOrder) => {
+        const product = products.find(
+          (product_) => product_.id === productOrder.productId,
+        );
+
+        if (!product) {
+          productsOrdersToRemove.push(productOrder);
+          productsToSave.push({
+            ...productOrder.product,
+            stock: productOrder.product.stock + productOrder.quantity,
+          });
+        } else if (
+          product.quantity - productOrder.quantity <=
+          productOrder.product.stock
+        ) {
+          productsOrdersToSave.push({
+            ...productOrder,
+            quantity: product.quantity,
+          });
+
+          productsToSave.push({
+            ...productOrder.product,
+            stock:
+              productOrder.product.stock +
+              productOrder.quantity -
+              product.quantity,
+          });
+        }
+      });
+
+      for (const product of products) {
+        if (
+          !productOrders.find(
+            (productOrder) => productOrder.productId === product.id,
+          )
+        ) {
+          const productDB = await this.productRepository.findOne({
+            where: { id: product.id },
+          });
+
+          if (product.quantity <= productDB.stock) {
+            await this.productRepository.save({
+              ...productDB,
+              stock: productDB.stock - product.quantity,
+            });
+
+            await this.productOrderRepository.save({
+              productId: productDB.id,
+              orderId: order.id,
+              quantity: product.quantity,
+            });
+          }
+        }
+      }
+
+      await this.productOrderRepository.remove(productsOrdersToRemove);
+      await this.productOrderRepository.save(productsOrdersToSave);
+      await this.productRepository.save(productsToSave);
     }
 
     return this.orderRepository.save(order);
