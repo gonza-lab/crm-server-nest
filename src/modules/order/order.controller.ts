@@ -22,6 +22,11 @@ import { Paginated } from 'src/decorators/paginated.decorator';
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @Get('count')
+  getTotalCount() {
+    return this.orderService.getTotalCount();
+  }
+
   @Roles(Role.admin)
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {

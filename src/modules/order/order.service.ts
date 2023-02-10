@@ -195,4 +195,10 @@ export class OrderService {
 
     await this.orderRepository.delete(conditions);
   }
+
+  async getTotalCount() {
+    const count = await this.orderRepository.count();
+
+    return { count };
+  }
 }
